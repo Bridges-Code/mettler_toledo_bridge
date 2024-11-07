@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_libserialport/flutter_libserialport.dart';
 import 'package:mettler_toledo_bridge/mettler_toledo_bridge.dart';
@@ -65,6 +63,52 @@ class _HomeViewState extends State<HomeView> {
           ListTile(
             title: Text('Tare: ${data?.tareWeight} ${data?.unit.name}'),
           ),
+          Row(
+            children: [
+              Expanded(
+                child: FilledButton(
+                  onPressed: () {
+                    mtBridge.clear();
+                  },
+                  child: const Text('Clear'),
+                ),
+              ),
+              Expanded(
+                child: FilledButton(
+                  onPressed: () {
+                    mtBridge.tare();
+                  },
+                  child: const Text('Tare'),
+                ),
+              ),
+              Expanded(
+                child: FilledButton(
+                  onPressed: () {
+                    mtBridge.print();
+                  },
+                  child: const Text('Print'),
+                ),
+              ),
+              Expanded(
+                child: FilledButton(
+                  onPressed: () {
+                    mtBridge.zero();
+                  },
+                  child: const Text('Zero'),
+                ),
+              ),
+              Expanded(
+                child: FilledButton(
+                  onPressed: () {
+                    mtBridge.switchUnit();
+                  },
+                  child: const Text('Switch'),
+                ),
+              ),
+            ]
+                .map((child) => const Padding(padding: EdgeInsets.all(8)))
+                .toList(),
+          )
         ],
       ),
     );
