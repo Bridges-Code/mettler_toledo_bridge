@@ -3,6 +3,7 @@ library mettler_toledo_bridge;
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:flutter_libserialport/flutter_libserialport.dart';
 
@@ -176,8 +177,7 @@ class MettlerToledoData {
   double get weight =>
       rawWeight / pow(10, deciamlPointLocation) * (isPositive ? 1 : -1);
 
-  double get tareWeight =>
-      rawTare / pow(10, deciamlPointLocation) * (isPositive ? 1 : -1);
+  double get tareWeight => rawTare / pow(10, deciamlPointLocation);
 
   double get netWeight => weight;
 
@@ -206,6 +206,7 @@ class MettlerToledoBridge {
   }
 
   late Stream<MettlerToledoData> _stream;
+  SerialPort? _port;
 
   /// Connect to the device
   void connect() {
@@ -222,12 +223,12 @@ class MettlerToledoBridge {
 
   /// Connect to the device via USB
   void _connectUsb() {
-    final port = SerialPort(device.address);
-    if (!port.openReadWrite()) {
+    _port = SerialPort(device.address);
+    if (!(_port?.openReadWrite() ?? false)) {
       throw Exception('Failed to open port: ${SerialPort.lastError}');
     }
 
-    final reader = SerialPortReader(port);
+    final reader = SerialPortReader(_port!);
     _stream = reader.stream
         .cast<List<int>>()
         .transform(ascii.decoder)
@@ -245,6 +246,31 @@ class MettlerToledoBridge {
   double readWeight() {
     // Read the weight from the device
     return 0.0;
+  }
+
+  /// Clear the device
+  void clear() {
+    _port?.write(ascii.encode("C"));
+  }
+
+  /// Tare the device
+  void tare() {
+    _port?.write(ascii.encode("T"));
+  }
+
+  /// Send print command to the device
+  void print() {
+    _port?.write(ascii.encode("P"));
+  }
+
+  /// Send zero command to the device
+  void zero() {
+    _port?.write(ascii.encode("Z"));
+  }
+
+  /// Send switch unit command to the device
+  void switchUnit() {
+    _port?.write(ascii.encode("S"));
   }
 
   /// Stream of weight readings
