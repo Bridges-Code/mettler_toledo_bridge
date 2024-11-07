@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
   mettler_toledo_bridge:
     path: ../
+  flutter_libserialport:
 
 dev_dependencies:
   flutter_test:

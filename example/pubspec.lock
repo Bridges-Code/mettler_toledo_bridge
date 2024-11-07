@@ -71,7 +71,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_libserialport:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_libserialport
       sha256: "20c320dcde8592a16f9badc0cacad61b1fb283dbec647b6ebfc1020f8274c67b"

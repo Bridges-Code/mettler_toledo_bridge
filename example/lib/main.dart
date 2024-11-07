@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_libserialport/flutter_libserialport.dart';
 import 'package:mettler_toledo_bridge/mettler_toledo_bridge.dart';
 
 void main() {
@@ -34,7 +35,7 @@ class HomeView extends StatelessWidget {
               model: MettlerToledoDeviceModel.ind231,
               communicationType: MettlertoledoCommunicationType.usb,
               protocol: MettlertoledoProtocol.continuous,
-              address: 'tty/USB0',
+              address: SerialPort.availablePorts.first,
             );
 
             final bridge = MettlerToledoBridge(device: device);
