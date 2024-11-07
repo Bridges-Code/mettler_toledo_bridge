@@ -19,8 +19,31 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  final device = MettlerToledoDevice(
+      model: MettlerToledoDeviceModel.ind231,
+      communicationType: MettlertoledoCommunicationType.usb,
+      protocol: MettlertoledoProtocol.continuous,
+      address: SerialPort.availablePorts[1]);
+  late final mtBridge = MettlerToledoBridge(device: device);
+  MettlerToledoData? data;
+
+  @override
+  void initState() {
+    super.initState();
+    mtBridge.stream.listen((data) {
+      setState(() {
+        this.data = data;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,29 +51,21 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Mettler Toledo Bridge Example'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            final device = MettlerToledoDevice(
-              model: MettlerToledoDeviceModel.ind231,
-              communicationType: MettlertoledoCommunicationType.usb,
-              protocol: MettlertoledoProtocol.continuous,
-              address: SerialPort.availablePorts.first,
-            );
-
-            final bridge = MettlerToledoBridge(device: device);
-
-            bridge.stream.listen((data) {
-              log('''Net weight: ${data.netWeight}
-Gross weight: ${data.grossWeight}
-Tare weight: ${data.tareWeight}
-Unit: ${data.unit.name}
-Stable: ${data.isStable}
-''');
-            });
-          },
-          child: const Text('Connect to Mettler Toledo Device'),
-        ),
+      body: Column(
+        children: [
+          ListTile(
+            title: Text('Is Stable: ${data?.isStable}'),
+          ),
+          ListTile(
+            title: Text('Net: ${data?.netWeight} ${data?.unit.name}'),
+          ),
+          ListTile(
+            title: Text('Gross: ${data?.grossWeight} ${data?.unit.name}'),
+          ),
+          ListTile(
+            title: Text('Tare: ${data?.tareWeight} ${data?.unit.name}'),
+          ),
+        ],
       ),
     );
   }

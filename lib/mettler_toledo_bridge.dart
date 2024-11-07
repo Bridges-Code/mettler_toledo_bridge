@@ -232,6 +232,7 @@ class MettlerToledoBridge {
         .cast<List<int>>()
         .transform(ascii.decoder)
         .transform(const LineSplitter())
+        .transform(Trimer())
         .transform(device.decoder);
   }
 
@@ -253,4 +254,11 @@ class MettlerToledoBridge {
 extension _StringExtension on String {
   String get binary =>
       runes.map((rune) => rune.toRadixString(2).padLeft(8, '0')).join('');
+}
+
+class Trimer extends StreamTransformerBase<String, String> {
+  @override
+  Stream<String> bind(Stream<String> stream) {
+    return stream.map((event) => event.replaceAll(String.fromCharCode(2), ''));
+  }
 }
