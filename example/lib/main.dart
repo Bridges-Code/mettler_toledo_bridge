@@ -63,7 +63,8 @@ class _HomeViewState extends State<HomeView> {
           ListTile(
             title: Text('Tare: ${data?.tareWeight} ${data?.unit.name}'),
           ),
-          Row(
+          Expanded(
+              child: Row(
             children: [
               Expanded(
                 child: FilledButton(
@@ -108,7 +109,7 @@ class _HomeViewState extends State<HomeView> {
             ]
                 .map((child) => const Padding(padding: EdgeInsets.all(8)))
                 .toList(),
-          )
+          ))
         ],
       ),
     );
