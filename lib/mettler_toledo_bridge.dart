@@ -72,7 +72,8 @@ class MettlerToledoDevice {
 MettlerToledoData parseContinuousData(String input) {
   final status = input.substring(0, 3);
   final rawWeight = int.parse(input.substring(3, 9));
-  final rawTare = int.parse(input.substring(9, 15));
+  final rawTare =
+      int.tryParse(input.length > 9 ? input.substring(9, 15) : '') ?? 0;
 
   int decimalPointLocation =
       _getDeciamlPointLocation(status[0].binary.substring(5, 8));
