@@ -54,7 +54,7 @@ class MettlerToledoDevice {
   StreamTransformer<String, MettlerToledoData> _continuousDecoder() {
     return StreamTransformer<String, MettlerToledoData>.fromHandlers(
       handleData: (String line, EventSink<MettlerToledoData> sink) {
-        debugPrint('Received: $line');
+        // debugPrint('Received: $line');
         final data = parseContinuousData(line);
 
         sink.add(data);
@@ -226,7 +226,7 @@ class MettlerToledoBridge {
   /// Connect to the device via USB
   void _connectUsb() {
     _port = SerialPort(device.address);
-    debugPrint('Opening port: ${device.address}');
+    // debugPrint('Opening port: ${device.address}');
     if (!(_port?.openReadWrite() ?? false)) {
       throw Exception('Failed to open port: ${SerialPort.lastError}');
     }
