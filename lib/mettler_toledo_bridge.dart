@@ -10,6 +10,7 @@ import 'package:flutter_libserialport/flutter_libserialport.dart';
 /// Supported Mettler Toledo device models
 enum MettlerToledoDeviceModel {
   ind231,
+  ics689,
 }
 
 /// Supported Mettler Toledo device communication types
@@ -72,8 +73,7 @@ class MettlerToledoDevice {
 MettlerToledoData parseContinuousData(String input) {
   final status = input.substring(0, 3);
   final rawWeight = int.parse(input.substring(3, 9));
-  final rawTare =
-      int.tryParse(input.length > 9 ? input.substring(9, 15) : '') ?? 0;
+  final rawTare = int.parse(input.substring(9, 15));
 
   int decimalPointLocation =
       _getDeciamlPointLocation(status[0].binary.substring(5, 8));
