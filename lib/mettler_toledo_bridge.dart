@@ -53,6 +53,7 @@ class MettlerToledoDevice {
   StreamTransformer<String, MettlerToledoData> _continuousDecoder() {
     return StreamTransformer<String, MettlerToledoData>.fromHandlers(
       handleData: (String line, EventSink<MettlerToledoData> sink) {
+        debugPrint('Received: $line');
         final data = parseContinuousData(line);
 
         sink.add(data);
