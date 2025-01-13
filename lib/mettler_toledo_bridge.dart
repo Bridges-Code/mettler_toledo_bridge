@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_libserialport/flutter_libserialport.dart';
 
 /// Supported Mettler Toledo device models
@@ -223,6 +224,7 @@ class MettlerToledoBridge {
   /// Connect to the device via USB
   void _connectUsb() {
     _port = SerialPort(device.address);
+    debugPrint('Opening port: ${device.address}');
     if (!(_port?.openReadWrite() ?? false)) {
       throw Exception('Failed to open port: ${SerialPort.lastError}');
     }
