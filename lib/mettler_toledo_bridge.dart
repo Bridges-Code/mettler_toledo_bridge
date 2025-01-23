@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_libserialport/flutter_libserialport.dart';
 
 /// Supported Mettler Toledo device models
@@ -39,7 +38,7 @@ class MettlerToledoDevice {
   /// The address of the device. For USB devices, this is the device path,
   /// e.g. tty/USB0.
   /// For Ethernet devices, this is the IP address. e.g. 192.168.1.1:4001
-  String address;
+  SerialPort address;
 
   /// The decoder to use for the device
   StreamTransformer<String, MettlerToledoData> get decoder {
@@ -225,7 +224,7 @@ class MettlerToledoBridge {
 
   /// Connect to the device via USB
   void _connectUsb() {
-    _port = SerialPort(device.address);
+    _port = device.address;
     // debugPrint('Opening port: ${device.address}');
     if (!(_port?.openReadWrite() ?? false)) {
       throw Exception('Failed to open port: ${SerialPort.lastError}');

@@ -29,7 +29,7 @@ class _HomeViewState extends State<HomeView> {
       model: MettlerToledoDeviceModel.ind231,
       communicationType: MettlertoledoCommunicationType.usb,
       protocol: MettlertoledoProtocol.continuous,
-      address: SerialPort.availablePorts[1]);
+      address: SerialPort(SerialPort.availablePorts[1]));
   late final mtBridge = MettlerToledoBridge(device: device);
   MettlerToledoData? data;
 
